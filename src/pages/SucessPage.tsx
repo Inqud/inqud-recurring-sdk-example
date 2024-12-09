@@ -67,14 +67,6 @@ const SuccessPage: React.FunctionComponent<ISuccessPageProps> = () => {
           >
             {formatNumber(plan.amount)} {plan.currency}
           </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            textAlign="center"
-            mt={1}
-          >
-            You allowed spending of {formatNumber(plan.amount)} {plan.currency}
-          </Typography>
         </>
       )}
 
