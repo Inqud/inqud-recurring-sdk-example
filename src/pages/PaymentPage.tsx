@@ -11,10 +11,10 @@ import {
 import InfoIcon from '@mui/icons-material/Info';
 import { formatNumber, shortenWithDotsBetween } from '../utils';
 import { useRecurringData } from 'inqud-recurring-api';
-import {values} from "lodash";
-import CheckboxGroup from "../ui/CheckboxGroup";
-import Select from "../ui/Select";
-import CustomSelect from "../ui/Select";
+import { values } from 'lodash';
+import CheckboxGroup from '../ui/CheckboxGroup';
+import CustomSelect from '../ui/Select';
+import {periodMap} from "../models";
 
 interface IConnectPageProps {
   address?: string;
@@ -22,8 +22,8 @@ interface IConnectPageProps {
 }
 
 const PaymentPage: React.FunctionComponent<IConnectPageProps> = ({
-  className,
-}) => {
+     className,
+   }) => {
   const {
     setCurrency,
     setSelectedNetwork,
@@ -44,6 +44,20 @@ const PaymentPage: React.FunctionComponent<IConnectPageProps> = ({
     limitFormatted,
     noBalance,
   } = useRecurringData();
+
+  const handleLimitChange = (value: string) => {
+    const numericValue = parseFloat(value);
+    if (numericValue > 0) {
+      setLimit(value);
+    }
+  };
+
+  const handleDurationChange = (value: string) => {
+    const numericValue = parseInt(value, 10);
+    if (numericValue > 0) {
+      setDuration(numericValue);
+    }
+  };
 
   return (
     <Box
@@ -117,14 +131,6 @@ const PaymentPage: React.FunctionComponent<IConnectPageProps> = ({
 
       {plan && selectedNetwork && (
         <Box display="flex" flexDirection="column" mb={3}>
-          <Typography
-            variant="caption"
-            fontWeight="bold"
-            color="textSecondary"
-            mb={1}
-          >
-            Select currency
-          </Typography>
           <CustomSelect
             currencies={selectedNetwork?.currencies}
             selectedCurrency={currency}
@@ -160,17 +166,19 @@ const PaymentPage: React.FunctionComponent<IConnectPageProps> = ({
                   currency?.currency ? `(${currency.currency})` : ''
                 }`}
                 value={isSubscription ? limitFormatted : '∞'}
-                onChange={(e) => setLimit(e.target.value)}
+                onChange={(e) => handleLimitChange(e.target.value)}
                 fullWidth
+                inputProps={{ inputMode: 'numeric', min: 0.01 }}
               />
             </Grid>
             <Grid item xs={5}>
               <TextField
-                label="Duration"
+                label={`Period${plan ? ` (${periodMap[plan?.period?.toLowerCase()]})` : ''}`}
                 type="number"
                 value={duration}
-                onChange={(e) => setDuration(Number(e.target.value))}
+                onChange={(e) => handleDurationChange(e.target.value)}
                 fullWidth
+                inputProps={{ inputMode: 'numeric', min: 1 }}
               />
             </Grid>
           </Grid>
