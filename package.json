@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.13.5",
     "@mui/icons-material": "^6.1.9",
     "@mui/material": "^6.1.9",
-    "inqud-recurring-api": "^1.0.6",
+    "inqud-recurring-api": "^1.0.8",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
